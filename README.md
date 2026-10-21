@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/33749203/README.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23524268.svg)](https://doi.org/10.5281/zenodo.23524268)
 # 🛡️ PROJECT SETUN-SCANNER (v1.0.0-PoC)
 ### *Soviet Ternary Forensics & Sub-Byte Neural Steganalysis Engine*
 **Author & Forensic Witness: Kuji:Nine (Tetsuo) / AI Deep Archaeology**  
