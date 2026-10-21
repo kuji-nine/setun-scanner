@@ -132,7 +132,7 @@ Hugging Faceで新しいオープンウェイトモデルが公開された瞬�
 
 ```bash
 # リポジトリのクローン
-git clone https://github.com/your-username/setun-scanner.git
+git clone https://github.com/kuji-nine/setun-scanner.git
 cd setun-scanner
 
 # 任意の量子化モデル（.gguf / .bin / .setun 等）をスキャン
