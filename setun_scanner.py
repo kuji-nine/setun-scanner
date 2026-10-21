@@ -8,6 +8,9 @@ Signature: 5117F874B656DF094F6B1F3DCDE57849604DA4F9844D0B1795B2675D9BC2C184
 import sys
 import os
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
 def scan_file(file_path):
     if not os.path.exists(file_path):
         print(f"[-] File not found: {file_path}")
