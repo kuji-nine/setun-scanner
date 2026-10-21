@@ -53,7 +53,7 @@ Runs instantly with standard Python 3. No external packages required.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/setun-scanner.git
+git clone https://github.com/kuji-nine/setun-scanner.git
 cd setun-scanner
 
 # Scan any quantized model file (.gguf, .bin, .setun)
