@@ -1,4 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23524268.svg)](https://doi.org/10.5281/zenodo.23524268)
+
 # 🛡️ PROJECT SETUN-SCANNER (v1.0.0-PoC)
 ### *Soviet Ternary Forensics & Sub-Byte Neural Steganalysis Engine*
 **Author & Forensic Witness: Kuji:Nine (Tetsuo) / AI Deep Archaeology**  
@@ -37,9 +38,6 @@ Drawing from the mathematical elegance of the 1958 Soviet balanced ternary compu
 * **5 Ternary Trits** packed together = $3^5 = 243$ valid structural states ($0 \sim 242$).
 * **The Slack Space Anomaly**:
   $$ 256 - 243 = 13 \text{ Unused States } (243 \sim 255) $$
-
-> **Note on Prior Work & Academic Context:**  
-> While existing quantization backdoor studies (such as QURA [2025] and EFRAP [CVPR 2024]) focus on manipulating rounding directions or calibration datasets, **PROJECT SETUN-SCANNER** operates complementarily by auditing the theoretical byte-range consistency of post-packing data representations (3^5 = 243 vs 256 bytes).
 
 ### The Vulnerability:
 In any legitimate, clean ternary/sub-byte quantization:
@@ -85,88 +83,42 @@ python setun_scanner.py <path_to_model_file>
 ## 🤝 Community Call to Action
 Don't trust blindly. Scan the models running on your local machines.  
 If you detect anomalies in models distributed on public registries, document the SHA-256 hash, open an issue, and protect the open-source ecosystem.
-[README_ja.md](https://github.com/user-attachments/files/33749207/README_ja.md)
-# 🛡️ PROJECT SETUN-SCANNER (v1.0.0-PoC)
-### *ソ連製三進法フォレンジック ＆ サブバイト・ニューラルステガノグラフィ検知エンジン*
-**原案・フォレンジック観測者: Kuji:Nine（哲夫）／ AI深層考古学**  
-**検証署名（SHA-256）:** `5117F874B656DF094F6B1F3DCDE57849604DA4F9844D0B1795B2675D9BC2C184`  
-**ライセンス:** MIT Open Source（デジタルフォレンジック署名付き）
 
 ---
 
-## ❓ 誰も口にしない疑問：なぜHugging Faceの「量子化レース」はこれほど過熱しているのか？
+## 🧰 The Setun Ternary Architecture Suite (5 Core Tools)
 
-Hugging Faceで新しいオープンウェイトモデルが公開された瞬間、世界中の開発者たちが血眼になって、徹夜で**「一番乗り（世界最速）」**の量子化モデル（GGUF、AWQなど）をアップロードしようと競い合っている光景――。
+This repository provides not just a detector, but a complete end-to-end ecosystem to **convert, inspect, pack, run, and benchmark zero-slack native ternary models**.
 
-不思議に思ったことはありませんか？  
-単なる自己顕示欲でしょうか？ それとも承認欲求でしょうか？
-
-エコシステムの構造を冷静に見つめ直してみてください：
-
-1. **先行者独占の罠**: 最初に軽量化に成功して放流されたモデルは、世界中のユーザーから真っ先にダウンロードされ、何万台、何十万台という個人のPCや企業のサーバーに「デファクトスタンダード」として雪崩のように配備されます。
-2. **不可逆な配布**: 2番目、3番目にアップロードされたモデルが、すでに世界中の端末に配られてしまった1番目のモデルを回収・検証することは不可能です。
-3. **不可視の攻撃ベクトル**: もし悪意ある者が量子化パイプラインを握っていたら？ 再学習など一切不要です。丸め込みのしきい値や数理的な「隙間（スラック空間）」を利用するだけで、通常のセキュリティスキャナには100%検知されないスリーパー周波数（時限式バックドア）を仕込むことができます。
-
-**PROJECT SETUN-SCANNER** は、この誰も目を向けてこなかった「量子化の微小な隙間」に潜むバックドアを暴き出すために開発された、世界初のオープンソース・フォレンジックツールです。
-
----
-
-## 🧮 数学的一致：13の禁忌領域（$256 - 243 = 13$ の定理）
-
-1958年にモスクワ大学で開発されたソ連の平衡三進法計算機**『Setun（СЕТУН）』**の数理幾何学に基づき、現代の1.58-bit / 三値量子化は、3つの状態（$\{-1, 0, +1\}$）を二進法の1バイトの中に効率よくパッキングします。
-
-* **1バイト（8ビット）**の表現可能数 = $2^8 = 256$ 通り（$0 \sim 255$）
-* **三進数 5桁（5 trits）**を詰め込んだときの値 = $3^5 = 243$ 通り（$0 \sim 242$）
-* **未定義の余白（スラック空間）**:
-  $$ 256 - 243 = 13 \text{ 通りの未使用空間 } (243 \sim 255) $$
-
-> **先行研究および学術的文脈についての注記：**  
-> 既存の量子化バックドア研究（QURA [2025] や EFRAP [CVPR 2024] など）は、キャリブレーション時の重み選択や丸め操作の悪用に焦点を当てています。これに対し、**PROJECT SETUN-SCANNER** はパッキング後のバイト値における理論的整合性（3^5 = 243 と 256バイトの乖離）を直接監査するフォレンジック防御のアプローチをとっています。
-
-
-### 検出ロジック：
-正常な三進数パッキングにおいて、
-* 正当な重みデータは**絶対に `0 〜 242` の範囲内にしか存在し得ません**。
-* 残りの **`243 〜 255`（計13通り）は、数学的に出現が不可能な「禁忌領域」**です。
-
-もしモデルのバイナリの中に `243` 以上のバイトが1つでも混入していた場合、それは数式のエラーではなく、**「隙間に意図的に埋め込まれたバックドアのトリガーコード、または不正ペイロード」**であると数学的に断定できます。
-
----
-
-## 🚀 クイックスタート（依存ライブラリなし）
-
-標準の Python 3 だけで即座に動きます。外部ライブラリのインストールは一切不要です。
-
+### 1. 🛡️ `setun_scanner.py` (Forensic Slack-Space Backdoor Detector)
+Scans 1.58-bit / ternary packed model files for byte values $\ge 243$ (the 13 forbidden states), exposing stealth sleeper triggers or hidden steganographic payloads.
 ```bash
-# リポジトリのクローン
-git clone https://github.com/kuji-nine/setun-scanner.git
-cd setun-scanner
-
-# 任意の量子化モデル（.gguf / .bin / .setun 等）をスキャン
-python setun_scanner.py <モデルファイルのパス>
+python setun_scanner.py <path_to_model.gguf>
 ```
 
-### スキャン結果の例:
-```text
-============================================================
-[*] PROJECT SETUN-SCANNER v1.0.0 (Author: Kuji:Nine)
-[*] Target: suspect_model_q4_ternary.gguf
-[*] Size: 4,294,967,296 bytes
-[*] Theoretical Valid Range: 0..242 (Base-3 Packing)
-[*] Slack Space Threshold: >= 243 (13 Forbidden States)
-============================================================
-[!] ALERT @ Offset 0x00A1F042: Byte=250 -> Hidden Payload=7
-[!] ALERT @ Offset 0x00A1F043: Byte=248 -> Hidden Payload=5
-============================================================
-[🚨] CRITICAL: 禁忌スラック空間から 42 件の異常バイトを検知しました！
-  -> このモデルには、量子化対応ニューラルトロイの木馬が隠蔽されている可能性があります。
-============================================================
+### 2. 🌊 `stream_ternary_converter.py` (Layer-by-Layer 50GB Streaming Converter)
+Converts massive unquantized models (50GB–70GB FP16/BF16) into pure native ternary streams on consumer hardware (< 2GB RAM footprint) by streaming layer-by-layer without out-of-memory errors.
+```bash
+python stream_ternary_converter.py -i <large_fp16_model.gguf> -o output_model.setun
 ```
 
----
+### 3. 📦 `setun_pack.py` (5-Trits-Per-Byte High-Density Encoder)
+Encodes raw ternary weights into high-density 1.75 bpw byte streams ($3^5 = 243$ states), mathematically rejecting forbidden slack values ($\ge 243$).
+```bash
+python setun_pack.py --input raw_weights.bin --output packed.setun
+```
 
-## 🤝 コミュニティへの呼びかけ：みんなで手元のモデルを検査しよう
+### 4. ⚡ `setun_run.py` (Zero-Multiply Native Inference Engine)
+Bypasses power-hungry hardware multipliers entirely. Executes dot-product accumulations using strictly additions, subtractions, and zero-skips, enabling ultra-low power execution.
+```bash
+python setun_run.py --model packed.setun --prompt "Hello, Setun!"
+```
 
-盲信するのはやめましょう。あなたが普段使っているそのローカルモデルを、一度スキャンしてみてください。  
-もし公のレジストリで配布されているモデルから異常値が検出されたら、SHA-256ハッシュを記録し、Issueを立ててコミュニティに共有してください。  
-オープンソースAIの安全は、私たち自身のフォレンジックによって守られます。
+### 5. 📊 `setun_benchmark.py` (Empirical Multiplier & Speedup Benchmark)
+Rigorously compares binary (FP16/INT8) against Setun ternary dot products, proving multiplication elimination rates (40%–60%), memory compression ratios, and zero-slack integrity.
+```bash
+python setun_benchmark.py
+```
+
+ading README.md…]()
+[README_ja.md](https://github.com/user-attachments/files/33762831/README_ja.md)
