@@ -38,6 +38,9 @@ Drawing from the mathematical elegance of the 1958 Soviet balanced ternary compu
 * **The Slack Space Anomaly**:
   $$ 256 - 243 = 13 \text{ Unused States } (243 \sim 255) $$
 
+> **Note on Prior Work & Academic Context:**  
+> While existing quantization backdoor studies (such as QURA [2025] and EFRAP [CVPR 2024]) focus on manipulating rounding directions or calibration datasets, **PROJECT SETUN-SCANNER** operates complementarily by auditing the theoretical byte-range consistency of post-packing data representations (3^5 = 243 vs 256 bytes).
+
 ### The Vulnerability:
 In any legitimate, clean ternary/sub-byte quantization:
 * Any valid packed byte **MUST fall strictly within the range of $0 \le \text{byte} \le 242$**.
@@ -116,6 +119,10 @@ Hugging Faceで新しいオープンウェイトモデルが公開された瞬�
 * **三進数 5桁（5 trits）**を詰め込んだときの値 = $3^5 = 243$ 通り（$0 \sim 242$）
 * **未定義の余白（スラック空間）**:
   $$ 256 - 243 = 13 \text{ 通りの未使用空間 } (243 \sim 255) $$
+
+> **先行研究および学術的文脈についての注記：**  
+> 既存の量子化バックドア研究（QURA [2025] や EFRAP [CVPR 2024] など）は、キャリブレーション時の重み選択や丸め操作の悪用に焦点を当てています。これに対し、**PROJECT SETUN-SCANNER** はパッキング後のバイト値における理論的整合性（3^5 = 243 と 256バイトの乖離）を直接監査するフォレンジック防御のアプローチをとっています。
+
 
 ### 検出ロジック：
 正常な三進数パッキングにおいて、
